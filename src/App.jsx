@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Preloader from "./components/Preloader";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import "./index.css"
+import "./index.css";
+
 const App = () => {
   const [loading, setLoading] = useState(true);
 
@@ -11,17 +13,17 @@ const App = () => {
       {loading ? (
         <Preloader onFinish={() => setLoading(false)} />
       ) : (
-        <>
+        <Router>
           <Navbar />
-          <Home />
-          <div className="bg-blue-500 text-white text-center p-4">
-      Tailwind is working! 🚀
-    </div>
-
-        </>
-
+          <main>
+            <Routes>
+              <Route path="/" element={<Home />} />
+            </Routes>
+          </main>
+        </Router>
       )}
     </div>
-  )}
+  );
+};
 
 export default App;

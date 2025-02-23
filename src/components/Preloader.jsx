@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { motion } from "framer-motion";
 
 const Preloader = ({ onFinish }) => {
@@ -47,6 +48,9 @@ const Preloader = ({ onFinish }) => {
       </motion.h1>
     </motion.div>
   );
+};
+Preloader.propTypes = {
+  onFinish: PropTypes.func.isRequired,
 };
 
 export default Preloader;
