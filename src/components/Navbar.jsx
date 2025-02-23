@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { BrainCircuit, Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom"; // Fixed import
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation(); 
+  const location = useLocation();
 
   const navItems = [
     { name: "Home", path: "/" },
-    { name: "Recipes", path: "/recipes" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
   ];
@@ -28,7 +27,7 @@ const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <BrainCircuit size={32} className="inline-block text-white m-2 text-center"/>
+          <BrainCircuit size={32} className="inline-block text-white m-2 text-center" />
           MindMetrics
         </motion.div>
 

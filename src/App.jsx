@@ -5,6 +5,8 @@ import Preloader from "./components/Preloader";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import SignUp from "./components/Signup";
+import About from "./components/About";
+import Footer from "./components/Footer";
 import "./index.css";
 
 const App = () => {
@@ -28,18 +30,24 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-900 to-black text-white flex flex-col items-center text-center p-6">
-      <Router>
-        <Navbar />
-        <main>
-          <Routes>
-            {/* Redirect to home if authenticated */}
-            <Route path="/" element={isAuthenticated ? <Navigate to="/home" /> : <SignUp />} />
+    <div className="flex flex-col min-h-screen">
+      {loading ? (
+        <Preloader onFinish={() => setLoading(false)} />
+      ) : (
+        <Router>
+          <Navbar />
+          <div className="flex-grow pt-16 bg-gradient-to-br from-gray-900 to-black"> 
+            <Routes>
+         
+              <Route path="/about" element={<About />} />
+              <Route path="/" element={isAuthenticated ? <Navigate to="/home" /> : <SignUp />} />
             <Route path="/sign" element={<SignUp />} />
             <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/" />} />
-          </Routes>
-        </main>
-      </Router>
+            </Routes>
+          </div>
+          <Footer />
+        </Router>
+      )}
     </div>
   );
 };
