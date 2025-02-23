@@ -1,3 +1,4 @@
+import Footsteps from "./Footsteps";
 const Home = () => {
     return (
       <div className="min-h-screen text-white flex flex-col items-center text-center p-6 mt-16">
@@ -52,6 +53,7 @@ const Home = () => {
               <h3 className="font-bold text-lg">📉 Analyze HRV</h3>
               <p className="text-sm mt-2">Higher HRV generally indicates lower stress, while lower HRV suggests higher stress levels.</p>
             </div>
+            <Footsteps/>
           </div>
         </section>
       </div>

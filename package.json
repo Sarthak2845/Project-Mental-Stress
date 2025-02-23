@@ -3,22 +3,26 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
+"scripts": {
+  "dev": "concurrently \"npm run server\" \"npm run client\"",
+  "server": "nodemon backend/server.js",
+  "client": "cd frontend && vite",
+  "build": "cd frontend && vite build",
+  "lint": "cd frontend && eslint .",
+  "preview": "cd frontend && vite preview"
+},
   "dependencies": {
-    "@tailwindcss/vite": "^4.0.8",
     "@tailwindcss/postcss": "^4.0.8",
+    "@tailwindcss/vite": "^4.0.8",
     "axios": "^1.7.9",
+    "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "framer-motion": "^12.4.7",
     "lucide-react": "^0.475.0",
+    "nodemon": "^3.1.9",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
     "react": "^19.0.0",

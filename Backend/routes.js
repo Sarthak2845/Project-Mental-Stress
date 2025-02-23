@@ -40,37 +40,37 @@ router.get("/auth/session", (req, res) => {
 });
 
 // ✅ Fetch Google Fit Data (Protected)
-router.post("/api/fit-data", isAuthenticated, async (req, res) => {
-  try {
-    const user = req.user;
-    if (!user?.accessToken) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    const response = await axios.post(
-      "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
-      {
-        aggregateBy: [
-          {
-            dataTypeName: "com.google.step_count.delta",
-            dataSourceId: "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
-          },
-        ],
-        bucketByTime: { durationMillis: 86400000 },
-        startTimeMillis: Date.now() - 7 * 86400000,
-        endTimeMillis: Date.now(),
-      },
-      {
-        headers: { Authorization: `Bearer ${user.accessToken}` },
+router.get("/api/fit-data", isAuthenticated, async (req, res) => {
+    try {
+      const user = req.user;
+      if (!user?.accessToken) {
+        return res.status(401).json({ error: "Unauthorized" });
       }
-    );
-
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error fetching Google Fit data:", error);
-    res.status(500).json({ error: "Failed to fetch Google Fit data" });
-  }
-});
+  
+      const response = await axios.post(
+        "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
+        {
+          aggregateBy: [
+            {
+              dataTypeName: "com.google.step_count.delta",
+              dataSourceId: "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
+            },
+          ],
+          bucketByTime: { durationMillis: 86400000 },
+          startTimeMillis: Date.now() - 86400000, // Today's steps
+          endTimeMillis: Date.now(),
+        },
+        {
+          headers: { Authorization: `Bearer ${user.accessToken}` },
+        }
+      );
+  
+      res.json(response.data);
+    } catch (error) {
+      console.error("Error fetching Google Fit data:", error);
+      res.status(500).json({ error: "Failed to fetch Google Fit data" });
+    }
+  });
 
 // ✅ Fetch User Info from Google (Protected)
 router.get("/api/user-info", isAuthenticated, async (req, res) => {
