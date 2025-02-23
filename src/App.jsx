@@ -22,7 +22,7 @@ const App = () => {
       .catch(() => {
         setIsAuthenticated(false);
       })
-      .finally(() => setLoading(false));
+      .finally(() => setLoading(true));
   }, []);
 
   if (loading) {
