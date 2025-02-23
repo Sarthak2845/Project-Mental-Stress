@@ -6,10 +6,10 @@
 "scripts": {
   "dev": "concurrently \"npm run server\" \"npm run client\"",
   "server": "nodemon backend/server.js",
-  "client": "cd frontend && vite",
-  "build": "cd frontend && vite build",
-  "lint": "cd frontend && eslint .",
-  "preview": "cd frontend && vite preview"
+  "client": "vite",
+  "build": "vite build",
+  "lint": "eslint .",
+  "preview": "vite preview"
 },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.8",
