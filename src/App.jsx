@@ -12,7 +12,7 @@ import "./index.css";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  
   // Check authentication status on mount
   useEffect(() => {
     axios.get("http://localhost:5000/auth/session", { withCredentials: true })
