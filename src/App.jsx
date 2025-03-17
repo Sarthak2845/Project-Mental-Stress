@@ -12,8 +12,6 @@ import "./index.css";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  
-  // Check authentication status on mount
   useEffect(() => {
     axios.get("http://localhost:5000/auth/session", { withCredentials: true })
       .then((res) => {
@@ -35,7 +33,7 @@ const App = () => {
         <Preloader onFinish={() => setLoading(false)} />
       ) : (
         <Router>
-          <Navbar />
+          <Navbar isAuth={isAuthenticated}/>
           <div className="flex-grow pt-16 bg-gradient-to-br from-gray-900 to-black"> 
             <Routes>
          

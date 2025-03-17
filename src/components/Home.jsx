@@ -1,7 +1,7 @@
 import Footsteps from "./Footsteps";
 const Home = () => {
     return (
-      <div className="min-h-screen text-white flex flex-col items-center text-center p-6 mt-16">
+      <div className="min-h-screen text-white flex flex-col items-center text-center p-6 mt-16 font-[SourGummy]">
         {/* Hero Section */}
         <div className="w-full bg-gradient-to-r from-amber-500 to-pink-500 py-16 px-6 rounded-bl-4xl shadow-lg">
           <h1 className="text-4xl font-extrabold text-white">Measure Your Stress, Manage Your Well-Being</h1>

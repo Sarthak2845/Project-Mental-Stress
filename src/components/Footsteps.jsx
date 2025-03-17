@@ -5,20 +5,20 @@ const Footsteps = () => {
   const [steps, setSteps] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // Fetch Google Fit step data from backend
   useEffect(() => {
-    axios
-      .post("http://localhost:5000/api/fit-data", {}, { withCredentials: true })
-      .then((res) => {
-        const buckets = res.data.bucket || [];
+    const fetchSteps = async () => {
+      try {
+        setLoading(true);
+        setError(""); 
+        const res = await axios.post("http://localhost:5000/api/fit-data", {}, { withCredentials: true });
+        if (!res.data?.bucket) {
+          throw new Error("Invalid response format");
+        }
         let totalSteps = 0;
-
-        // Extract step count from response
-        buckets.forEach((bucket) => {
-          bucket.dataset.forEach((dataset) => {
-            dataset.point.forEach((point) => {
-              point.value.forEach((val) => {
+        res.data.bucket.forEach((bucket) => {
+          bucket.dataset?.forEach((dataset) => {
+            dataset.point?.forEach((point) => {
+              point.value?.forEach((val) => {
                 totalSteps += val.intVal || 0;
               });
             });
@@ -26,11 +26,19 @@ const Footsteps = () => {
         });
 
         setSteps(totalSteps);
-      })
-      .catch(() => {
+      } catch (err) {
         setError("Failed to fetch step data. Make sure you are logged in.");
-      })
-      .finally(() => setLoading(false));
+        setSteps(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSteps();
+
+    // Optional: Auto-refresh steps every 1 minute
+    const interval = setInterval(fetchSteps, 60000);
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   return (
@@ -41,7 +49,7 @@ const Footsteps = () => {
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
-        <p className="text-3xl font-bold">{steps.toLocaleString()} 🚶</p>
+        <p className="text-3xl font-bold">{steps?.toLocaleString() || 0} 🚶</p>
       )}
     </div>
   );
