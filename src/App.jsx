@@ -7,7 +7,9 @@ import Home from "./components/Home";
 import SignUp from "./components/Signup";
 import About from "./components/About";
 import Footer from "./components/Footer";
+import Profile from "./components/Profile";
 import "./index.css";
+import Instruction from "./components/Instruction";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -41,6 +43,8 @@ const App = () => {
               <Route path="/" element={isAuthenticated ? <Navigate to="/home" /> : <SignUp />} />
             <Route path="/sign" element={<SignUp />} />
             <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/" />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/instructions" element={<Instruction />} />
             </Routes>
           </div>
           <Footer />

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Footsteps from "./Footsteps";
 const Home = () => {
     return (
@@ -9,12 +10,9 @@ const Home = () => {
         </div>
         
         {/* CTA Button */}
-        <button 
-          type="button" 
-          className="text-gray-900 bg-gradient-to-r from-red-200 via-red-300 to-yellow-200 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400 font-medium rounded-lg text-sm px-5 py-2.5 text-center m-4"
-        >
-          Start the Test
-        </button>
+        <Link to="/instructions" >
+        <button className="mt-8 bg-gradient-to-r from-amber-500 to-pink-500 px-6 py-3 rounded shadow-lg hover:from-amber-600 hover:to-pink-600">Take the test</button>
+        </Link>
         
         {/* How It Works Section */}
         <section className="mt-12 max-w-3xl text-gray-300">
