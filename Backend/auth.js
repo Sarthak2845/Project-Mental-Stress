@@ -11,6 +11,7 @@ const setupAuth = (app) => {
       secret: process.env.SESSION_SECRET || "your_secret",
       resave: false,
       saveUninitialized: true,
+      cookie: { secure: process.env.NODE_ENV === "production" }, // Secure cookie in production
     })
   );
 
@@ -22,12 +23,17 @@ const setupAuth = (app) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/auth/google/callback",
+        callbackURL: process.env.NODE_ENV === "production"
+          ? "https://mindmetricss.netlify.app/auth/google/callback"
+          : "http://localhost:5000/auth/google/callback",
         scope: ["profile", "email", "https://www.googleapis.com/auth/fitness.activity.read"],
       },
       async (accessToken, refreshToken, profile, done) => {
+        if (!accessToken) {
+          return done(new Error("Access token not received"), null);
+        }
         profile.accessToken = accessToken;
-        profile.refreshToken = refreshToken;
+        profile.refreshToken = refreshToken || null;
         return done(null, profile);
       }
     )
