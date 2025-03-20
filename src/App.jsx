@@ -14,8 +14,9 @@ import Instruction from "./components/Instruction";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
-    axios.get("http://localhost:5000/auth/session", { withCredentials: true })
+    axios.get("https://mindmetricss-backend-url.com/auth/session", { withCredentials: true })
       .then((res) => {
         setIsAuthenticated(res.data.authenticated);
       })
@@ -35,16 +36,15 @@ const App = () => {
         <Preloader onFinish={() => setLoading(false)} />
       ) : (
         <Router>
-          <Navbar isAuth={isAuthenticated}/>
+          <Navbar isAuth={isAuthenticated} />
           <div className="flex-grow pt-16 bg-gradient-to-br from-gray-900 to-black"> 
             <Routes>
-         
               <Route path="/about" element={<About />} />
               <Route path="/" element={isAuthenticated ? <Navigate to="/home" /> : <SignUp />} />
-            <Route path="/sign" element={<SignUp />} />
-            <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/" />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/instructions" element={<Instruction />} />
+              <Route path="/sign" element={<SignUp />} />
+              <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/" />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/instructions" element={<Instruction />} />
             </Routes>
           </div>
           <Footer />

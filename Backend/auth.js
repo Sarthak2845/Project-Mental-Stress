@@ -22,7 +22,7 @@ const setupAuth = (app) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "/auth/google/callback",
+        callbackURL: "https://mindmetricss.netlify.app/auth/google/callback",
         scope: ["profile", "email", "https://www.googleapis.com/auth/fitness.activity.read"],
       },
       async (accessToken, refreshToken, profile, done) => {

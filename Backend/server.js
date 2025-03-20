@@ -9,8 +9,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+// Middleware with updated CORS
+app.use(cors({ origin: "https://mindmetricss.netlify.app", credentials: true }));
 app.use(express.json());
 
 // Setup Authentication
@@ -19,11 +19,11 @@ setupAuth(app);
 // Use API Routes
 app.use("/", routes);
 
-// Serve React build folder
+// Serve React build folder (assuming backend deployment)
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, "dist")));
 
-// Serve React app for all routes (React handles routing)
+// Serve React app for all routes
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });

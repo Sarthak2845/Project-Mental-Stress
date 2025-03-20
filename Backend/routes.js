@@ -18,7 +18,7 @@ router.get("/auth/google", passport.authenticate("google"));
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/sign" }),
-  (req, res) => res.redirect("http://localhost:5173/home")
+  (req, res) => res.redirect("https://mindmetricss.netlify.app/home")
 );
 
 // ✅ Logout Route
