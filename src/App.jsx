@@ -4,7 +4,7 @@ import axios from "axios";
 import Preloader from "./components/Preloader";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import SignUp from "./components/Signup";
+import SignUp from "./components/SignUp";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import Profile from "./components/Profile";
