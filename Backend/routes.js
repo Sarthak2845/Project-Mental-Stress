@@ -7,13 +7,13 @@ const router = express.Router();
 // ✅ Middleware to Check Authentication
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
-    return next(); // User is authenticated, proceed
+    return next();
   }
   res.status(401).json({ error: "Unauthorized access. Please log in." });
 };
 
 // ✅ Google OAuth Routes
-router.get("/auth/google", passport.authenticate("google"));
+router.get("/auth/google", passport.authenticate("google", { scope: ["profile", "email", "https://www.googleapis.com/auth/fitness.activity.read"] }));
 
 router.get(
   "/auth/google/callback",
@@ -25,8 +25,11 @@ router.get(
 router.get("/auth/logout", (req, res) => {
   req.logout((err) => {
     if (err) return res.status(500).json({ error: "Logout failed" });
-    req.session.destroy();
-    res.send({ message: "Logged out successfully" });
+    req.session.destroy((err) => {
+      if (err) return res.status(500).json({ error: "Session destruction failed" });
+      res.clearCookie("connect.sid");
+      res.json({ message: "Logged out successfully" });
+    });
   });
 });
 
@@ -41,47 +44,43 @@ router.get("/auth/session", (req, res) => {
 
 // ✅ Fetch Google Fit Data (Protected)
 router.get("/api/fit-data", isAuthenticated, async (req, res) => {
-    try {
-      const user = req.user;
-      if (!user?.accessToken) {
-        return res.status(401).json({ error: "Unauthorized" });
-      }
-  
-      const response = await axios.post(
-        "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
-        {
-          aggregateBy: [
-            {
-              dataTypeName: "com.google.step_count.delta",
-              dataSourceId: "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
-            },
-          ],
-          bucketByTime: { durationMillis: 86400000 },
-          startTimeMillis: Date.now() - 86400000, // Today's steps
-          endTimeMillis: Date.now(),
-        },
-        {
-          headers: { Authorization: `Bearer ${user.accessToken}` },
-        }
-      );
-  
-      res.json(response.data);
-    } catch (error) {
-      console.error("Error fetching Google Fit data:", error);
-      res.status(500).json({ error: "Failed to fetch Google Fit data" });
+  try {
+    const accessToken = req.user?.accessToken;
+    if (!accessToken) {
+      return res.status(401).json({ error: "Unauthorized" });
     }
-  });
+
+    const response = await axios.post(
+      "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
+      {
+        aggregateBy: [{
+          dataTypeName: "com.google.step_count.delta",
+          dataSourceId: "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
+        }],
+        bucketByTime: { durationMillis: 86400000 },
+        startTimeMillis: Date.now() - 86400000,
+        endTimeMillis: Date.now(),
+      },
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching Google Fit data:", error);
+    res.status(500).json({ error: "Failed to fetch Google Fit data" });
+  }
+});
 
 // ✅ Fetch User Info from Google (Protected)
 router.get("/api/user-info", isAuthenticated, async (req, res) => {
   try {
-    const user = req.user;
-    if (!user?.accessToken) {
+    const accessToken = req.user?.accessToken;
+    if (!accessToken) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
     const response = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
-      headers: { Authorization: `Bearer ${user.accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
 
     res.json(response.data);
@@ -94,29 +93,20 @@ router.get("/api/user-info", isAuthenticated, async (req, res) => {
 // ✅ Navigation Routes (Protected)
 const navItems = [
   { name: "Home", path: "/home" },
-  { name: "Recipes", path: "/recipes" },
   { name: "About", path: "/about" },
   { name: "Contact", path: "/contact" },
 ];
 
-// ✅ Home (Protected)
 router.get("/home", isAuthenticated, (req, res) => {
   res.json({ message: "Welcome to Home Page", user: req.user, navItems });
 });
 
-// ✅ Recipes (Protected)
-router.get("/recipes", isAuthenticated, (req, res) => {
-  res.json({ message: "Welcome to the Recipes Page", recipes: [] });
-});
-
-// ✅ About (Protected)
 router.get("/about", isAuthenticated, (req, res) => {
   res.json({ message: "About Us Page", description: "Learn more about us!" });
 });
 
-// ✅ Contact (Protected)
 router.get("/contact", isAuthenticated, (req, res) => {
-  res.json({ message: "Contact Us", email: "avinashshetty4455@example.com" });
+  res.json({ message: "Contact Us", email: "support@example.com" });
 });
 
 export default router;

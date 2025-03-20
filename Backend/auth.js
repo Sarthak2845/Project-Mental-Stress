@@ -11,6 +11,7 @@ const setupAuth = (app) => {
       secret: process.env.SESSION_SECRET || "your_secret",
       resave: false,
       saveUninitialized: true,
+      cookie: { secure: process.env.NODE_ENV === "production" }, // Secure cookie in production
     })
   );
 
@@ -26,8 +27,11 @@ const setupAuth = (app) => {
         scope: ["profile", "email", "https://www.googleapis.com/auth/fitness.activity.read"],
       },
       async (accessToken, refreshToken, profile, done) => {
+        if (!accessToken) {
+          return done(new Error("Access token not received"), null);
+        }
         profile.accessToken = accessToken;
-        profile.refreshToken = refreshToken;
+        profile.refreshToken = refreshToken || null;
         return done(null, profile);
       }
     )
