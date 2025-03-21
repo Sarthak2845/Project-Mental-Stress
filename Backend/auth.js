@@ -11,7 +11,6 @@ const setupAuth = (app) => {
       secret: process.env.SESSION_SECRET || "your_secret",
       resave: false,
       saveUninitialized: true,
-      cookie: { secure: process.env.NODE_ENV === "production" }, // Secure cookie in production
     })
   );
 
@@ -23,15 +22,12 @@ const setupAuth = (app) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "https://mindmetricss.netlify.app/auth/google/callback",
+        callbackURL: "/auth/google/callback",
         scope: ["profile", "email", "https://www.googleapis.com/auth/fitness.activity.read"],
       },
       async (accessToken, refreshToken, profile, done) => {
-        if (!accessToken) {
-          return done(new Error("Access token not received"), null);
-        }
         profile.accessToken = accessToken;
-        profile.refreshToken = refreshToken || null;
+        profile.refreshToken = refreshToken;
         return done(null, profile);
       }
     )
@@ -41,4 +37,4 @@ const setupAuth = (app) => {
   passport.deserializeUser((user, done) => done(null, user));
 };
 
-export default setupAuth;
+export default setupAuth;;
