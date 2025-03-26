@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import Profile from "./components/Profile";
 import "./index.css";
 import Instruction from "./components/Instruction";
+import Test from "./components/Test";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -45,6 +46,7 @@ const App = () => {
             <Route path="/home" element={isAuthenticated ? <Home /> : <Navigate to="/" />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/instructions" element={<Instruction />} />
+            <Route path="/test" element={<Test/>}/>
             </Routes>
           </div>
           <Footer />
