@@ -37,4 +37,4 @@ const setupAuth = (app) => {
   passport.deserializeUser((user, done) => done(null, user));
 };
 
-export default setupAuth;
+export default setupAuth;;

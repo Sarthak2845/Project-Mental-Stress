@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -10,7 +11,7 @@ const Footsteps = () => {
       try {
         setLoading(true);
         setError(""); 
-        const res = await axios.post("http://localhost:5000/api/fit-data", {}, { withCredentials: true });
+        const res = await axios.post("https://your-backend-url.com/api/fit-data", {}, { withCredentials: true });
         if (!res.data?.bucket) {
           throw new Error("Invalid response format");
         }
@@ -36,9 +37,8 @@ const Footsteps = () => {
 
     fetchSteps();
 
-    // Optional: Auto-refresh steps every 1 minute
     const interval = setInterval(fetchSteps, 60000);
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
 
   return (

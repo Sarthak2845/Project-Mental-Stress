@@ -61,7 +61,7 @@ router.get("/api/fit-data", isAuthenticated, async (req, res) => {
           endTimeMillis: Date.now(),
         },
         {
-          headers: { Authorization: `Bearer ${user.accessToken}` },
+          headers: { Authorization: Bearer ${user.accessToken} },
         }
       );
   
@@ -81,7 +81,7 @@ router.get("/api/user-info", isAuthenticated, async (req, res) => {
     }
 
     const response = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
-      headers: { Authorization: `Bearer ${user.accessToken}` },
+      headers: { Authorization: Bearer ${user.accessToken} },
     });
 
     res.json(response.data);

@@ -4,7 +4,7 @@ import axios from "axios";
 import Preloader from "./components/Preloader";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import SignUp from "./components/Signup";
+import SignUp from "./components/SignUp";
 import About from "./components/About";
 import Footer from "./components/Footer";
 import Profile from "./components/Profile";
@@ -15,8 +15,9 @@ import Test from "./components/Test";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   useEffect(() => {
-    axios.get("http://localhost:5000/auth/session", { withCredentials: true })
+    axios.get("https://mindmetricss-backend-url.com/auth/session", { withCredentials: true })
       .then((res) => {
         setIsAuthenticated(res.data.authenticated);
       })
@@ -36,10 +37,9 @@ const App = () => {
         <Preloader onFinish={() => setLoading(false)} />
       ) : (
         <Router>
-          <Navbar isAuth={isAuthenticated}/>
+          <Navbar isAuth={isAuthenticated} />
           <div className="flex-grow pt-16 bg-gradient-to-br from-gray-900 to-black"> 
             <Routes>
-         
               <Route path="/about" element={<About />} />
               <Route path="/" element={isAuthenticated ? <Navigate to="/home" /> : <SignUp />} />
             <Route path="/sign" element={<SignUp />} />
