@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Footsteps from "./Footsteps";
+import HeartRate from "./Heatrate";
 const Home = () => {
     return (
       <div className="min-h-screen text-white flex flex-col items-center text-center p-6 mt-16 font-[SourGummy]">
@@ -52,6 +53,7 @@ const Home = () => {
               <p className="text-sm mt-2">Higher HRV generally indicates lower stress, while lower HRV suggests higher stress levels.</p>
             </div>
             <Footsteps/>
+            <HeartRate/>
           </div>
         </section>
       </div>

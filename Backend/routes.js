@@ -102,6 +102,36 @@ router.get("/api/user-info", isAuthenticated, async (req, res) => {
     res.status(500).json({ error: "Failed to fetch user info" });
   }
 });
+router.get('/api/heart-rate', isAuthenticated, async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user?.accessToken) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const response = await axios.post(
+      'https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate',
+      {
+        aggregateBy: [
+          {
+            dataTypeName: 'com.google.heart_rate.bpm',
+          },
+        ],
+        bucketByTime: { durationMillis: 86400000 },
+        startTimeMillis: Date.now() - 86400000,
+        endTimeMillis: Date.now(),
+      },
+      {
+        headers: { Authorization: `Bearer ${user.accessToken}` },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching heart rate data:', error);
+    res.status(500).json({ error: 'Failed to fetch heart rate data' });
+  }
+});
 
 // ✅ Navigation Routes (Protected)
 const navItems = [
