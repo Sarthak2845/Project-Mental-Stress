@@ -52,37 +52,48 @@ router.get("/auth/session", (req, res) => {
 });
 
 // ✅ Fetch Google Fit Data (Protected)
-router.get("/api/fit-data", isAuthenticated, async (req, res) => {
-    try {
-      const user = req.user;
-      if (!user?.accessToken) {
-        return res.status(401).json({ error: "Unauthorized" });
-      }
-  
-      const response = await axios.post(
-        "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
-        {
-          aggregateBy: [
-            {
-              dataTypeName: "com.google.step_count.delta",
-              dataSourceId: "derived:com.google.step_count.delta:com.google.android.gms:estimated_steps",
-            },
-          ],
-          bucketByTime: { durationMillis: 86400000 },
-          startTimeMillis: Date.now() - 86400000, // Today's steps
-          endTimeMillis: Date.now(),
-        },
-        {
-          headers: { Authorization: `Bearer ${user.accessToken}` },
-        }
-      );
-  
-      res.json(response.data);
-    } catch (error) {
-      console.error("Error fetching Google Fit data:", error);
-      res.status(500).json({ error: "Failed to fetch Google Fit data" });
+router.get("/api/steps", isAuthenticated, async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user?.accessToken) {
+      return res.status(401).json({ error: "Unauthorized" });
     }
-  });
+
+    const response = await axios.post(
+      "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
+      {
+        aggregateBy: [
+          {
+            dataTypeName: "com.google.step_count.delta",
+            dataSourceId: "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas", // Changed here
+          },
+        ],
+        bucketByTime: { durationMillis: 86400000 },
+        startTimeMillis: Date.now() - 86400000,
+        endTimeMillis: Date.now(),
+      },
+      {
+        headers: { Authorization: `Bearer ${user.accessToken}` },
+      }
+    );
+
+    let totalSteps = 0;
+    response.data?.bucket?.forEach((bucket) => {
+      bucket.dataset?.forEach((dataset) => {
+        dataset.point?.forEach((point) => {
+          point.value?.forEach((val) => {
+            totalSteps += val.intVal || 0;
+          });
+        });
+      });
+    });
+
+    res.json({ steps: totalSteps });
+  } catch (error) {
+    console.error("Error fetching step count data:", error?.response?.data || error.message);
+    res.status(500).json({ error: error?.response?.data?.error?.message || "Failed to fetch step data" });
+  }
+});
 
 // ✅ Fetch User Info from Google (Protected)
 router.get("/api/user-info", isAuthenticated, async (req, res) => {

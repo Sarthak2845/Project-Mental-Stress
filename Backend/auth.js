@@ -23,7 +23,12 @@ const setupAuth = (app) => {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: "/auth/google/callback",
-        scope: ["profile", "email", "https://www.googleapis.com/auth/fitness.activity.read", "https://www.googleapis.com/auth/fitness.heart_rate.read"],
+        scope: [ "profile",
+          "email",
+          "https://www.googleapis.com/auth/fitness.activity.read",
+          "https://www.googleapis.com/auth/fitness.activity.write",
+          "https://www.googleapis.com/auth/fitness.heart_rate.read",
+          "https://www.googleapis.com/auth/fitness.location.read",],
       },
       async (accessToken, refreshToken, profile, done) => {
         profile.accessToken = accessToken;

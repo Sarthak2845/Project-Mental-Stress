@@ -5,27 +5,17 @@ const Footsteps = () => {
   const [steps, setSteps] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
   useEffect(() => {
     const fetchSteps = async () => {
       try {
         setLoading(true);
         setError(""); 
-        const res = await axios.post("http://localhost:5000/api/fit-data", {}, { withCredentials: true });
-        if (!res.data?.bucket) {
-          throw new Error("Invalid response format");
+        const res = await axios.get("http://localhost:5000/api/steps", { withCredentials: true });
+        if (!res.data?.steps) {
+          throw new Error("No step data found");
         }
-        let totalSteps = 0;
-        res.data.bucket.forEach((bucket) => {
-          bucket.dataset?.forEach((dataset) => {
-            dataset.point?.forEach((point) => {
-              point.value?.forEach((val) => {
-                totalSteps += val.intVal || 0;
-              });
-            });
-          });
-        });
-
-        setSteps(totalSteps);
+        setSteps(res.data.steps);
       } catch (err) {
         setError("Failed to fetch step data. Make sure you are logged in.");
         setSteps(null);
@@ -36,7 +26,7 @@ const Footsteps = () => {
 
     fetchSteps();
 
-    // Optional: Auto-refresh steps every 1 minute
+    // Optional: Auto-refresh every 1 minute
     const interval = setInterval(fetchSteps, 60000);
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
