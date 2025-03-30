@@ -20,7 +20,19 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/sign" }),
   (req, res) => res.redirect("http://localhost:5173/home")
 );
+router.get("/api/user-info", isAuthenticated, async (req, res) => {
+  try {
+    const { accessToken } = req.user;
+    const response = await axios.get("https://www.googleapis.com/oauth2/v2/userinfo", {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
 
+    res.json(response.data);
+  } catch (error) {
+    console.error("Error fetching user info:", error);
+    res.status(500).json({ error: "Failed to fetch user info" });
+  }
+});
 // ✅ Logout Route
 router.get("/auth/logout", (req, res) => {
   req.logout((err) => {
