@@ -10,7 +10,7 @@ const Navbar = ({isAuth}) => {
   const location = useLocation();
 
   const navItems = [
-    { name: "Home", path: "/" },
+    { name: "Home", path: "/home" },
     { name: "About", path: "/about" },
     { name: "Remedies", path: "/remedies" },
   ];
