@@ -11,6 +11,7 @@ import Profile from "./components/Profile";
 import "./index.css";
 import Instruction from "./components/Instruction";
 import Test from "./components/Test";
+import Remedies from "./components/Remedies";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
             <Route path="/instructions" element={<Instruction />} />
             <Route path="/test" element={<Test />} />
+            <Route path='/remedies' element={<Remedies />} />
             </Routes>
           </div>
           <Footer />

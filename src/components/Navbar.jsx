@@ -12,7 +12,7 @@ const Navbar = ({isAuth}) => {
   const navItems = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
+    { name: "Remedies", path: "/remedies" },
   ];
 
   return (
