@@ -12,6 +12,7 @@ import "./index.css";
 import Instruction from "./components/Instruction";
 import Test from "./components/Test";
 import Remedies from "./components/Remedies";
+import AudioTherapy from "./components/AudioTherapy";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -48,6 +49,7 @@ const App = () => {
             <Route path="/instructions" element={<Instruction />} />
             <Route path="/test" element={<Test />} />
             <Route path='/remedies' element={<Remedies />} />
+            <Route path="/audio" element={<AudioTherapy/>} />
             </Routes>
           </div>
           <Footer />
