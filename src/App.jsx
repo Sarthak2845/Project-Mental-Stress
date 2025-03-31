@@ -17,7 +17,7 @@ const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   useEffect(() => {
-    axios.get("http://localhost:5000/auth/session", { withCredentials: true })
+    axios.get("https://mindmetrics-backend.vercel.app/auth/session", { withCredentials: true })
       .then((res) => {
         setIsAuthenticated(res.data.authenticated);
       })

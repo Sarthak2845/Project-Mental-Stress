@@ -7,7 +7,7 @@ const HeartRate = () => {
   useEffect(() => {
     const fetchHeartRate = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/heart-rate', {
+        const response = await fetch('https://mindmetrics-backend.vercel.app/api/heart-rate', {
           credentials: 'include',
         });
         if (!response.ok) {

@@ -3,7 +3,7 @@ import { BrainCircuit} from "lucide-react";
 import { FaGoogle } from "react-icons/fa6";
 const SignUp = () => {
   const handleGoogleSignIn = () => {
-    window.location.href = "http://localhost:5000/auth/google"; // Backend OAuth route
+    window.location.href = "https://mindmetrics-backend.vercel.app/auth/google"; // Backend OAuth route
   };
 
   return (

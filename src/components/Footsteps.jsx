@@ -11,7 +11,7 @@ const Footsteps = () => {
       try {
         setLoading(true);
         setError(""); 
-        const res = await axios.get("http://localhost:5000/api/steps", { withCredentials: true });
+        const res = await axios.get("https://mindmetrics-backend.vercel.app/api/steps", { withCredentials: true });
         if (!res.data?.steps) {
           throw new Error("No step data found");
         }

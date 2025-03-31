@@ -10,7 +10,7 @@ const [stressResult, setStressResult] = useState(null);
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/user-info', { withCredentials: true });
+        const response = await axios.get('https://mindmetrics-backend.vercel.app/api/user-info', { withCredentials: true });
         setUser(response.data);
       } catch (err) {
         setError('Failed to fetch user information. Please try again.');
