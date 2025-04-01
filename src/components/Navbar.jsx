@@ -5,9 +5,25 @@ import { BrainCircuit, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { IoPerson } from "react-icons/io5";
 
-const Navbar = ({isAuth}) => {
+const Navbar = ({ isAuth, setIsAuth }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("https://mindmetrics-backend.vercel.app/auth/logout", {
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        setIsAuth(false); // Update authentication state
+      } else {
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   const navItems = [
     { name: "Home", path: "/home" },
@@ -50,17 +66,27 @@ const Navbar = ({isAuth}) => {
             </motion.div>
           ))}
 
-          {/* Profile Icon (Aligned Properly) */}
-         {
-          isAuth ?  (
-          <div className="flex items-center">
-              <Link to="/profile" className="flex items-center mr-2">
-            <IoPerson size={24} className="text-white hover:text-orange-400 transition duration-300" />
-          </Link>
-          </div>
-          ) : (<span></span>)
-         }
-          
+          {/* Profile & Logout Button */}
+          {isAuth ? (
+            <div className="flex items-center space-x-4">
+              <Link to="/profile" className="flex items-center">
+                <IoPerson size={24} className="text-white hover:text-orange-400 transition duration-300" />
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg transition duration-200"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/signup"
+              className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg transition duration-200"
+            >
+              Sign Up
+            </Link>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -91,24 +117,49 @@ const Navbar = ({isAuth}) => {
               </motion.li>
             ))}
 
-            {/* Profile Icon in Mobile Menu */}
-            <motion.li
-              className="cursor-pointer hover:text-orange-400 transition duration-300"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              onClick={() => setIsOpen(false)}
-            >
-              <Link to="/profile" className="flex items-center space-x-2">
-                <IoPerson size={24} className="text-white" />
-                <span>Profile</span>
-              </Link>
-            </motion.li>
+            {/* Profile & Logout for Mobile Menu */}
+            {isAuth ? (
+              <>
+                <motion.li
+                  className="cursor-pointer hover:text-orange-400 transition duration-300"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Link to="/profile" className="flex items-center space-x-2">
+                    <IoPerson size={24} className="text-white" />
+                    <span>Profile</span>
+                  </Link>
+                </motion.li>
+                <motion.li
+                  className="cursor-pointer bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-500 transition duration-300"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  onClick={handleLogout}
+                >
+                  Logout
+                </motion.li>
+              </>
+            ) : (
+              <motion.li
+                className="cursor-pointer bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition duration-300"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                onClick={() => setIsOpen(false)}
+              >
+                <Link to="/signup">Sign Up</Link>
+              </motion.li>
+            )}
           </ul>
         </motion.div>
       )}
     </nav>
   );
 };
+
 export default Navbar;
+
 
