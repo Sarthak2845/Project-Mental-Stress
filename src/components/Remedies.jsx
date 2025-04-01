@@ -2,9 +2,9 @@ import { FaBookOpenReader, FaMusic, FaSpa, FaUserDoctor } from "react-icons/fa6"
 import { Link } from "react-router-dom";
 const therapies = [
     { id: 1, icon: <FaMusic className="text-5xl text-yellow-400" />, title: "Audio Therapy", desc: "Relax with soothing melodies to unwind your mind. Soft instrumental music or nature sounds can help you feel at ease.",nav:"/audio" },
-    { id: 2, icon: <FaBookOpenReader className="text-5xl text-blue-400" />, title: "Reading Therapy", desc: "Lose yourself in a book. Reading uplifting stories, self-help guides, or even poetry can provide comfort and a fresh perspective.",nav:"read" },
-    { id: 3, icon: <FaSpa className="text-5xl text-green-400" />, title: "Yoga Therapy", desc: "Move, breathe, and let go. Practicing yoga can help reduce stress, improve focus, and enhance overall well-being.",nav:"yoga" },
-    { id: 4, icon: <FaUserDoctor className="text-5xl text-red-400" />, title: "Consult a Doctor", desc: "If stress is overwhelming and persistent, seeking professional help is the best step. A doctor or therapist can provide tailored guidance to support your mental health.",nav:"doctor" },
+    { id: 2, icon: <FaBookOpenReader className="text-5xl text-blue-400" />, title: "Reading Therapy", desc: "Lose yourself in a book. Reading uplifting stories, self-help guides, or even poetry can provide comfort and a fresh perspective.",nav:"/read" },
+    { id: 3, icon: <FaSpa className="text-5xl text-green-400" />, title: "Yoga Therapy", desc: "Move, breathe, and let go. Practicing yoga can help reduce stress, improve focus, and enhance overall well-being.",nav:"/yoga" },
+    { id: 4, icon: <FaUserDoctor className="text-5xl text-red-400" />, title: "Consult a Doctor", desc: "If stress is overwhelming and persistent, seeking professional help is the best step. A doctor or therapist can provide tailored guidance to support your mental health.",nav:"/doctor" },
   ];
   
   

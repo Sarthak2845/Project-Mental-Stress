@@ -13,6 +13,7 @@ import Instruction from "./components/Instruction";
 import Test from "./components/Test";
 import Remedies from "./components/Remedies";
 import AudioTherapy from "./components/AudioTherapy";
+import ReadingTherapy from "./components/ReadingTherapy";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -50,6 +51,7 @@ const App = () => {
             <Route path="/test" element={<Test />} />
             <Route path='/remedies' element={<Remedies />} />
             <Route path="/audio" element={<AudioTherapy/>} />
+            <Route path="/read" element={<ReadingTherapy />} />
             </Routes>
           </div>
           <Footer />
