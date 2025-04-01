@@ -35,16 +35,16 @@ const HeartRate = () => {
 
   const calculateStress = (bpm) => {
     if (bpm < 60) {
-      setStressLevel('Relaxed 😌');
+      setStressLevel('Relaxed ');
     } else if (bpm >= 60 && bpm <= 100) {
-      setStressLevel('Neutral 😐');
+      setStressLevel('Moderate');
     } else {
-      setStressLevel('High Stress 😰');
+      setStressLevel('High Stress ');
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen text-white bg-[#020e1d]">
+    <div className="flex flex-col items-center justify-center rounded-lg text-white bg-[#020e1d]">
       <h1 className="text-4xl text-amber-100 font-bold mb-4">Heart Rate Data</h1>
       {error ? (
         <p className="text-red-500">{error}</p>
