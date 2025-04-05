@@ -36,7 +36,7 @@ export default function AudioTherapy() {
         muted
         className="absolute top-0 left-0 w-full h-full object-cover"
       >
-        <source src="https://videos.pexels.com/video-files/25947958/11922774_2560_1440_60fps.mp4" type="video/mp4" />
+        <source src="/public/videos/nature.mp4" type="video/mp4" />
       </video>
 
       {/* Overlay for better text readability */}
