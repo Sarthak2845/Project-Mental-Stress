@@ -3,8 +3,8 @@ import { FaPlay, FaPause } from "react-icons/fa6";
 
 const audioTracks = [
   { id: 1, title: "Relaxing Nature Sounds", src: "/audio/nature.mp3" },
-  { id: 2, title: "Soft Piano Melody", src: "/audio/piano.mp3" },
-  { id: 3, title: "Guided Meditation", src: "/audio/meditation.mp3" }
+  { id: 2, title: "Guided Meditation", src: "/audio/meditation.mp3" },
+  { id: 3, title: "Binaural Beats", src: "/audio/meditation.mp3" }
 ];
 
 export default function AudioTherapy() {
