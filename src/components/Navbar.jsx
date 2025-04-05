@@ -133,7 +133,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                   </Link>
                 </motion.li>
                 <motion.li
-                  className="cursor-pointer bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-500 transition duration-300"
+                  className="cursor-pointer bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-500 transition duration-300 hover:cursor-pointer"
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 }}
@@ -143,15 +143,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
                 </motion.li>
               </>
             ) : (
-              <motion.li
-                className="cursor-pointer bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-500 transition duration-300"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                onClick={() => setIsOpen(false)}
-              >
-                <Link to="/signup">Sign Up</Link>
-              </motion.li>
+          <></>
             )}
           </ul>
         </motion.div>

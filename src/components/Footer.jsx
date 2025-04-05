@@ -24,7 +24,7 @@ const Footer = () => {
             <BrainCircuit size={32} className="inline-block text-white m-2 text-center" />
             MindMetrics
           </motion.div>
-          <p className="text-sm">&copy; {new Date().getFullYear()} All Rights Reserved.</p>
+          <p className="text-sm">&copy; {new Date().getFullYear()}; Sarthak Rana. All rights reserved.</p>
         </div>
 
         {/* Middle Section - Quick Links */}
