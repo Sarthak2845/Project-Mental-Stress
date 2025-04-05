@@ -36,7 +36,7 @@ export default function AudioTherapy() {
         muted
         className="absolute top-0 left-0 w-full h-full object-cover"
       >
-        <source src="/public/videos/nature.mp4" type="video/mp4" />
+        <source src="/videos/nature.mp4" type="video/mp4" />
       </video>
       {/* Content */}
       <div className="relative z-10 text-white">
