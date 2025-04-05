@@ -45,7 +45,7 @@ export default function AudioTherapy() {
 
         <div className="flex flex-col gap-4">
           {audioTracks.map((track) => (
-            <div key={track.id} className="p-4 w-72 bg-[#ffffff22] border-2 border-[#ffaa00] rounded-lg shadow-lg backdrop-blur-md flex flex-col items-center">
+            <div key={track.id} className="p-4 w-72 bg-[#000000c8]  rounded-lg shadow-lg  flex flex-col items-center backdrop-blur-sm">
               <h2 className="text-xl font-bold mb-2">{track.title}</h2>
               <audio id={`audio-${track.id}`} src={track.src}></audio>
               <button 

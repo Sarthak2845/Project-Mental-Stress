@@ -80,12 +80,7 @@ const Navbar = ({ isAuth, setIsAuth }) => {
               </button>
             </div>
           ) : (
-            <Link
-              to="/signup"
-              className="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg transition duration-200"
-            >
-              Sign Up
-            </Link>
+          <></>
           )}
         </div>
 
