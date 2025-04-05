@@ -38,10 +38,6 @@ export default function AudioTherapy() {
       >
         <source src="/public/videos/nature.mp4" type="video/mp4" />
       </video>
-
-      {/* Overlay for better text readability */}
-      <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-40"></div>
-
       {/* Content */}
       <div className="relative z-10 text-white">
         <h1 className="text-4xl font-extrabold mb-4">Audio Therapy</h1>
