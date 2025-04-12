@@ -14,6 +14,8 @@ import Test from "./components/Test";
 import Remedies from "./components/Remedies";
 import AudioTherapy from "./components/AudioTherapy";
 import ReadingTherapy from "./components/ReadingTherapy";
+import YogaTherapy from "./components/YogaTherapy";
+import ConsultDoctor from "./components/ConsultDoctor";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -52,6 +54,8 @@ const App = () => {
             <Route path='/remedies' element={<Remedies />} />
             <Route path="/audio" element={<AudioTherapy/>} />
             <Route path="/read" element={<ReadingTherapy />} />
+            <Route path="/yoga" element={<YogaTherapy />} />
+            <Route path="/doctor" element={<ConsultDoctor />} />
             </Routes>
           </div>
           <Footer />
