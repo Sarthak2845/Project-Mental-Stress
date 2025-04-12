@@ -50,7 +50,7 @@ export default function YogaTherapy() {
         </div>
 
         {/* 🧘 Poses */}
-        <div className="mt-10">
+        <div className="mt-10 m-10">
           <h2 className="text-3xl font-bold mb-4">Try These Simple Yoga Poses</h2>
           <div className="flex flex-col md:flex-row gap-6 justify-center">
           <iframe width="560" height="315" src="https://www.youtube.com/embed/yqeirBfn2j4?si=F5SFy5m7SJt9quy9" title="YouTube video player" frameBorder="10" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"  allowfullscreen className="rounded-lg"></iframe>
