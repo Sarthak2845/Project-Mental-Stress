@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import Footsteps from './Footsteps'
+import Footsteps from './Footsteps';
+
 const ThreeDotsWave = () => {
   return (
     <div className="flex space-x-2 items-center justify-center mt-4">
@@ -33,21 +34,16 @@ const CheckStress = () => {
           const predicted = predictStress(bpm);
           setStressLevel(predicted);
         }
-
-        setLoading(false);
       } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
 
-    fetchHeartRate();
-    const interval = setInterval(fetchHeartRate, 10000);
-    return () => clearInterval(interval);
+    fetchHeartRate(); // Fetch only once on mount
   }, []);
-  console.log(heartRate, stressLevel, error);
 
-  // ✨ Simple ML-style prediction logic
   const predictStress = (bpm) => {
     if (bpm < 60) return 'Relaxed 🧘‍♂️';
     if (bpm <= 90) return 'Moderate 😌';
@@ -55,7 +51,7 @@ const CheckStress = () => {
   };
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center text-center p-6 mt-16 font-[SourGummy]" >
+    <div className="min-h-screen text-white flex flex-col items-center text-center p-6 mt-16 font-[SourGummy]">
       <h1 className="text-4xl text-amber-100 font-bold mb-4">🧠 Real-Time Stress Detector</h1>
 
       {error && <p className="text-red-500">{error}</p>}
@@ -86,7 +82,8 @@ const CheckStress = () => {
           </p>
         </>
       )}
-      <Footsteps/>
+
+      <Footsteps />
     </div>
   );
 };
