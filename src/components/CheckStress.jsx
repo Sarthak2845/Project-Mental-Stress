@@ -1,3 +1,4 @@
+import { RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -51,15 +52,7 @@ const fetchHeartRate = async () => {
     setLoading(false);
   }
 };
-  useEffect(() => {
-    fetchHeartRate(); // initial fetch on mount
 
-    const interval = setInterval(() => {
-      fetchHeartRate();
-    }, 15000); // fetch every 15 seconds
-
-    return () => clearInterval(interval); // cleanup on unmount
-  }, []);
 
   const predictStress = (bpm) => {
     if (bpm < 60) return { level: 'Relaxed 🧘‍♂️', score: 25 };
@@ -92,7 +85,7 @@ const fetchHeartRate = async () => {
         </>
       ) : (
         <>
-          <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-md">
+          <div className="bg-[#28041a] p-6 rounded-lg shadow-lg w-full max-w-md border-4 border-pink-600">
             <div className="w-40 h-40 mx-auto mb-6">
               <CircularProgressbar
                 value={stressScore}
@@ -126,10 +119,10 @@ const fetchHeartRate = async () => {
             className={`mt-6 px-6 py-2 rounded-md transition-colors font-medium ${
               loading
                 ? 'bg-gray-600 cursor-not-allowed'
-                : 'bg-cyan-500 hover:bg-cyan-600'
+                : 'bg-[#021d08] border-green-500 border-4 hover:bg-[#021d08] hover:border-green-400'
             }`}
           >
-            {loading ? 'Refreshing...' : '🔄 Refresh'}
+            {loading ? 'Refreshing...' :  <RefreshCcw/>}
           </button>
         </>
       )}
