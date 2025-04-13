@@ -1,5 +1,5 @@
-import { RefreshCcw } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { RefreshCcw } from 'lucide-react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -18,41 +18,47 @@ const CheckStress = () => {
   const [error, setError] = useState('');
   const [stressLevel, setStressLevel] = useState('');
   const [stressScore, setStressScore] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
-// Reusable fetch function
-const fetchHeartRate = async () => {
-  try {
-    setLoading(true);
-    const response = await fetch('https://mindmetrics-backend.vercel.app/api/heart-rate', {
-      credentials: 'include',
-    });
+  // Fetch heart rate from API
+  const fetchHeartRate = async () => {
+    try {
+      setLoading(true);
+      setError('');
 
-    if (!response.ok) throw new Error('Failed to fetch heart rate data');
+      const response = await fetch('https://mindmetrics-backend.vercel.app/api/heart-rate', {
+        credentials: 'include',
+      });
 
-    const data = await response.json();
-    const points = data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value;
+      if (!response.ok) throw new Error('Failed to fetch heart rate data');
 
-    const bpmValues = points?.map(p => p.fpVal);
-    const avgBpm = bpmValues && bpmValues.length > 0
-      ? bpmValues.reduce((sum, val) => sum + val, 0) / bpmValues.length
-      : null;
+      const data = await response.json();
+      const points = data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value;
+      const bpmValues = points?.map(p => p.fpVal);
 
-    if (avgBpm) {
-      setHeartRate(avgBpm.toFixed(1));
-      const { level, score } = predictStress(avgBpm);
-      setStressLevel(level);
-      setStressScore(score);
-    } else {
-      throw new Error('No valid heart rate values found');
+      const avgBpm = bpmValues?.length
+        ? bpmValues.reduce((sum, val) => sum + val, 0) / bpmValues.length
+        : null;
+
+      if (avgBpm) {
+        setHeartRate(avgBpm.toFixed(1));
+        const { level, score } = predictStress(avgBpm);
+        setStressLevel(level);
+        setStressScore(score);
+      } else {
+        throw new Error('No valid heart rate values found');
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
+  // Fetch once on mount
+  useEffect(() => {
+    fetchHeartRate();
+  }, []);
 
   const predictStress = (bpm) => {
     if (bpm < 60) return { level: 'Relaxed 🧘‍♂️', score: 25 };
@@ -61,9 +67,9 @@ const fetchHeartRate = async () => {
   };
 
   const getColor = () => {
-    if (stressScore > 80) return '#ef4444'; // red
-    if (stressScore > 40) return '#facc15'; // yellow
-    return '#10b981'; // green
+    if (stressScore > 80) return '#ef4444';
+    if (stressScore > 40) return '#facc15';
+    return '#10b981';
   };
 
   const getQuote = () => {
@@ -75,54 +81,66 @@ const fetchHeartRate = async () => {
   return (
     <div className="min-h-screen bg-gradient-to-tr from-gray-900 to-gray-800 text-white flex flex-col items-center justify-center text-center px-6 font-[SourGummy]">
       <h1 className="text-4xl text-amber-100 font-bold mb-6">🧠 Real-Time Stress Detector</h1>
-  
-      {error && <p className="text-red-500">{error}</p>}
-  
-      {loading ? (
+
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+
+      {loading && !heartRate ? (
         <>
           <p className="text-gray-300 text-xl">Analyzing your vitals...</p>
           <ThreeDotsWave />
         </>
       ) : (
         <>
-          <div className="bg-[#28041a] p-6 rounded-lg shadow-lg w-full max-w-md border-4 border-pink-600">
-            <div className="w-40 h-40 mx-auto mb-6">
-              <CircularProgressbar
-                value={stressScore}
-                text={`${stressScore}%`}
-                styles={buildStyles({
-                  textColor: '#fff',
-                  pathColor: getColor(),
-                  trailColor: '#374151',
-                })}
-              />
+          {heartRate && (
+            <div className="bg-[#28041a] p-6 rounded-lg shadow-lg w-full max-w-md border-4 border-pink-600">
+              <div className="w-40 h-40 mx-auto mb-6">
+                <CircularProgressbar
+                  value={stressScore}
+                  text={`${stressScore}%`}
+                  styles={buildStyles({
+                    textColor: '#fff',
+                    pathColor: getColor(),
+                    trailColor: '#374151',
+                  })}
+                />
+              </div>
+              <p className="text-white text-lg mb-2">
+                Heart Rate: <span className="font-semibold">{parseInt(heartRate)} bpm</span>
+              </p>
+              <p className="text-xl mb-4">
+                Stress Level:{' '}
+                <span className={
+                  stressLevel.includes('High') ? 'text-red-500'
+                  : stressLevel.includes('Moderate') ? 'text-yellow-400'
+                  : 'text-green-400'}>
+                  {stressLevel}
+                </span>
+              </p>
+              <p className="italic text-sm text-gray-400">{getQuote()}</p>
             </div>
-            <p className="text-white text-lg mb-2">
-              Heart Rate: <span className="font-semibold">{parseInt(heartRate)} bpm</span>
-            </p>
-            <p className="text-xl mb-4">
-              Stress Level:{' '}
-              <span className={
-                stressLevel.includes('High') ? 'text-red-500'
-                : stressLevel.includes('Moderate') ? 'text-yellow-400'
-                : 'text-green-400'}>
-                {stressLevel}
-              </span>
-            </p>
-            <p className="italic text-sm text-gray-400">{getQuote()}</p>
-          </div>
-  
+          )}
+
           {/* 🔄 Refresh Button */}
           <button
             onClick={fetchHeartRate}
             disabled={loading}
-            className={`mt-6 px-6 py-2 rounded-md transition-colors font-medium ${
+            className={`mt-6 px-6 py-2 rounded-md transition-colors font-medium flex items-center justify-center gap-2 ${
               loading
                 ? 'bg-gray-600 cursor-not-allowed'
                 : 'bg-[#021d08] border-green-500 border-4 hover:bg-[#021d08] hover:border-green-400'
             }`}
           >
-            {loading ? 'Refreshing...' :  <RefreshCcw/>}
+            {loading ? (
+              <>
+                <RefreshCcw className="animate-spin" />
+                Refreshing...
+              </>
+            ) : (
+              <>
+                <RefreshCcw />
+                Refresh
+              </>
+            )}
           </button>
         </>
       )}
@@ -131,4 +149,5 @@ const fetchHeartRate = async () => {
 };
 
 export default CheckStress;
+
 
