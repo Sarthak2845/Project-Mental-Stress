@@ -1,7 +1,4 @@
 import { Link } from "react-router-dom";
-import Footsteps from "./Footsteps";
-import HeartRate from "./Heatrate";
-
 const Home = () => {
   return (
     <div className="min-h-screen text-white flex flex-col items-center text-center p-6 mt-16 font-[SourGummy]">
@@ -35,14 +32,14 @@ const Home = () => {
       </section>
 
       {/* Google Fit API Section */}
-      <section className="mt-12 max-w-4xl text-gray-300 px-4">
+      <section className="mt-12 max-w-4xl text-gray-300 px-4 flex flex-col items-center justify-center">
         <h2 className="text-2xl font-semibold">📡 Integrating Google Fit API</h2>
         <p className="mt-3">
           To enhance stress measurement accuracy, we use the 
           <span className="text-blue-400"> Google Fit API</span> to fetch your heart rate variability (HRV) data from a smartwatch. 
           HRV is a strong indicator of stress levels.
         </p>
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="mt-6 flex justify-center items-center flex-col gap-6 ">
           {["📥 Fetch Heart Rate Data", "📉 Analyze HRV"].map((title, index) => (
             <div key={index} className="p-4 bg-[#020e1d] rounded-lg shadow-md border-2 border-[#0f6bdb]">
               <h3 className="font-bold text-lg">{title}</h3>
@@ -52,8 +49,9 @@ const Home = () => {
               ][index]}</p>
             </div>
           ))}
-          <Footsteps />
-          <HeartRate />
+              <Link to="/heart-instruction" className="mt-8">
+        <button className="bg-gradient-to-r from-amber-500 to-pink-500 px-6 py-3 rounded shadow-lg text-lg sm:text-xl hover:from-amber-600 hover:to-pink-600">Calculate Using Heart Rate</button>
+      </Link>
         </div>
       </section>
     </div>

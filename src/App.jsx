@@ -16,16 +16,17 @@ import AudioTherapy from "./components/AudioTherapy";
 import ReadingTherapy from "./components/ReadingTherapy";
 import YogaTherapy from "./components/YogaTherapy";
 import ConsultDoctor from "./components/ConsultDoctor";
+import HeartInstruction from "./components/HeartInstruction";
 const App = () => {
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);//make it false
   useEffect(() => {
     axios.get("https://mindmetrics-backend.vercel.app/auth/session", { withCredentials: true })
       .then((res) => {
         setIsAuthenticated(res.data.authenticated);
       })
       .catch(() => {
-        setIsAuthenticated(false);
+        setIsAuthenticated(false);//make it false
       })
       .finally(() => setLoading(false));
   }, []);
@@ -56,6 +57,7 @@ const App = () => {
             <Route path="/read" element={<ReadingTherapy />} />
             <Route path="/yoga" element={<YogaTherapy />} />
             <Route path="/doctor" element={<ConsultDoctor />} />
+            <Route path="/heart-instruction" element={<HeartInstruction />} />
             </Routes>
           </div>
           <Footer />
