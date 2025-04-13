@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import Footsteps from './Footsteps';
-import HeartRate from './HeartRate';
 const ThreeDotsWave = () => {
   return (
     <div className="flex space-x-2 items-center justify-center mt-4">
@@ -82,9 +80,6 @@ const CheckStress = () => {
           </p>
         </>
       )}
-
-      <Footsteps />
-      <HeartRate/>
     </div>
   );
 };
