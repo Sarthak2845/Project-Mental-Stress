@@ -16,35 +16,41 @@ const CheckStress = () => {
   const [heartRate, setHeartRate] = useState(null);
   const [error, setError] = useState('');
   const [stressLevel, setStressLevel] = useState('');
-  const [stressScore, setStressScore] = useState(0); // For progress bar
+  const [stressScore, setStressScore] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchHeartRate = async () => {
-      try {
-        const response = await fetch('https://mindmetrics-backend.vercel.app/api/heart-rate', {
-          credentials: 'include',
-        });
+  const fetchHeartRate = async () => {
+    try {
+      const response = await fetch('https://mindmetrics-backend.vercel.app/api/heart-rate', {
+        credentials: 'include',
+      });
 
-        if (!response.ok) throw new Error('Failed to fetch heart rate data');
+      if (!response.ok) throw new Error('Failed to fetch heart rate data');
 
-        const data = await response.json();
-        const bpm = data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0]?.fpVal;
+      const data = await response.json();
+      const bpm = data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value?.[0]?.fpVal;
 
-        if (bpm) {
-          setHeartRate(bpm);
-          const { level, score } = predictStress(bpm);
-          setStressLevel(level);
-          setStressScore(score);
-        }
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+      if (bpm) {
+        setHeartRate(bpm);
+        const { level, score } = predictStress(bpm);
+        setStressLevel(level);
+        setStressScore(score);
       }
-    };
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchHeartRate();
+  useEffect(() => {
+    fetchHeartRate(); // initial fetch on mount
+
+    const interval = setInterval(() => {
+      fetchHeartRate();
+    }, 15000); // fetch every 15 seconds
+
+    return () => clearInterval(interval); // cleanup on unmount
   }, []);
 
   const predictStress = (bpm) => {
@@ -106,5 +112,4 @@ const CheckStress = () => {
 };
 
 export default CheckStress;
-
 
