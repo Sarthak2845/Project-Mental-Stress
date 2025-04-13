@@ -4,10 +4,12 @@ import { motion } from "framer-motion";
 import { BrainCircuit, Menu, X } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { IoPerson } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = ({ isAuth, setIsAuth }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
+  const navigate = useNavigate();
+
 
   const handleLogout = async () => {
     try {
@@ -16,20 +18,21 @@ const Navbar = ({ isAuth, setIsAuth }) => {
         credentials: "include",
       });
   
+      setIsAuth(false); // Unauthenticate either way
+  
       if (response.ok) {
-        setIsAuth(false); // ❌ Mark user as not authenticated
-        window.location.href = "/sign"; // 🔁 Redirect to sign-in page
+        navigate("/sign"); // React router redirect
       } else {
         console.error("Logout failed");
-        setIsAuth(false); // Still force logout on frontend even if backend fails
-        window.location.href = "/sign";
+        navigate("/sign");
       }
     } catch (error) {
       console.error("Error logging out:", error);
-      setIsAuth(false); // Just in case
-      window.location.href = "/sign";
+      setIsAuth(false);
+      navigate("/sign");
     }
   };
+  
   
 
   const navItems = [
