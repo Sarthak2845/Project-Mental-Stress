@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Footsteps from './Footsteps'
 const ThreeDotsWave = () => {
   return (
     <div className="flex space-x-2 items-center justify-center mt-4">
@@ -9,7 +10,7 @@ const ThreeDotsWave = () => {
   );
 };
 
-const HeartRate = () => {
+const CheckStress = () => {
   const [heartRate, setHeartRate] = useState(null);
   const [error, setError] = useState('');
   const [stressLevel, setStressLevel] = useState('');
@@ -85,10 +86,11 @@ const HeartRate = () => {
           </p>
         </>
       )}
+      <Footsteps/>
     </div>
   );
 };
 
-export default HeartRate;
+export default CheckStress;
 
 
