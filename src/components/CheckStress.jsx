@@ -25,28 +25,33 @@ const CheckStress = () => {
     try {
       setLoading(true);
       setError('');
-
+  
       const response = await fetch('https://mindmetrics-backend.vercel.app/api/heart-rate', {
         credentials: 'include',
       });
-
+  
       if (!response.ok) throw new Error('Failed to fetch heart rate data');
-
+  
       const data = await response.json();
-      const points = data?.bucket?.[0]?.dataset?.[0]?.point?.[0]?.value;
-      const bpmValues = points?.map(p => p.fpVal);
-
-      const avgBpm = bpmValues?.length
-        ? bpmValues.reduce((sum, val) => sum + val, 0) / bpmValues.length
+      const heartRates = data?.heartRates;
+  
+      if (!Array.isArray(heartRates) || heartRates.length === 0) {
+        throw new Error('No heart rate data found');
+      }
+  
+      const bpmValues = heartRates.map(hr => hr.bpm).filter(bpm => typeof bpm === 'number');
+  
+      const avgBpm = bpmValues.length
+        ? bpmValues.reduce((sum, bpm) => sum + bpm, 0) / bpmValues.length
         : null;
-
+  
       if (avgBpm) {
         setHeartRate(avgBpm.toFixed(1));
         const { level, score } = predictStress(avgBpm);
         setStressLevel(level);
         setStressScore(score);
       } else {
-        throw new Error('No valid heart rate values found');
+        throw new Error('No valid BPM values available');
       }
     } catch (err) {
       setError(err.message);
@@ -54,7 +59,7 @@ const CheckStress = () => {
       setLoading(false);
     }
   };
-
+  
   // Fetch once on mount
   useEffect(() => {
     fetchHeartRate();
