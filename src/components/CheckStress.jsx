@@ -44,6 +44,7 @@ const HeartRate = () => {
     const interval = setInterval(fetchHeartRate, 10000);
     return () => clearInterval(interval);
   }, []);
+  console.log(heartRate, stressLevel, error);
 
   // ✨ Simple ML-style prediction logic
   const predictStress = (bpm) => {
@@ -54,7 +55,7 @@ const HeartRate = () => {
 
   return (
     <div className="min-h-screen text-white flex flex-col items-center text-center p-6 mt-16 font-[SourGummy]" >
-      <h1 className="text-4xl text-amber-100 font-bold mb-4">🧠 Real-Time Stress Detecto</h1>
+      <h1 className="text-4xl text-amber-100 font-bold mb-4">🧠 Real-Time Stress Detector</h1>
 
       {error && <p className="text-red-500">{error}</p>}
 
