@@ -12,19 +12,25 @@ const Navbar = ({ isAuth, setIsAuth }) => {
   const handleLogout = async () => {
     try {
       const response = await fetch("https://mindmetrics-backend.vercel.app/auth/logout", {
+        method: "GET",
         credentials: "include",
       });
   
       if (response.ok) {
-        setIsAuth(false); // Update auth state
-        window.location.href = "/sign"; // Redirect to sign-in page
+        setIsAuth(false); // ❌ Mark user as not authenticated
+        window.location.href = "/sign"; // 🔁 Redirect to sign-in page
       } else {
         console.error("Logout failed");
+        setIsAuth(false); // Still force logout on frontend even if backend fails
+        window.location.href = "/sign";
       }
     } catch (error) {
       console.error("Error logging out:", error);
+      setIsAuth(false); // Just in case
+      window.location.href = "/sign";
     }
   };
+  
 
   const navItems = [
     { name: "Home", path: "/home" },
