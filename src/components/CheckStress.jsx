@@ -15,6 +15,7 @@ const ThreeDotsWave = () => {
 
 const CheckStress = () => {
   const [heartRate, setHeartRate] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState(null);
   const [error, setError] = useState('');
   const [stressLevel, setStressLevel] = useState('');
   const [stressScore, setStressScore] = useState(0);
@@ -25,33 +26,35 @@ const CheckStress = () => {
     try {
       setLoading(true);
       setError('');
-  
+
       const response = await fetch('https://mindmetrics-backend.vercel.app/api/heart-rate', {
         credentials: 'include',
       });
-  
+
       if (!response.ok) throw new Error('Failed to fetch heart rate data');
-  
+
       const data = await response.json();
       const heartRates = data?.heartRates;
-  
+
       if (!Array.isArray(heartRates) || heartRates.length === 0) {
         throw new Error('No heart rate data found');
       }
-  
-      const bpmValues = heartRates.map(hr => hr.bpm).filter(bpm => typeof bpm === 'number');
-  
-      const avgBpm = bpmValues.length
-        ? bpmValues.reduce((sum, bpm) => sum + bpm, 0) / bpmValues.length
-        : null;
-  
-      if (avgBpm) {
-        setHeartRate(avgBpm.toFixed(1));
-        const { level, score } = predictStress(avgBpm);
+
+      // Get the most recent reading (latest timestamp)
+      const mostRecent = heartRates.reduce((latest, entry) =>
+        entry.time > latest.time ? entry : latest
+      );
+
+      const bpm = mostRecent?.bpm;
+
+      if (typeof bpm === 'number') {
+        setHeartRate(bpm);
+        setLastUpdated(mostRecent.time);
+        const { level, score } = predictStress(bpm);
         setStressLevel(level);
         setStressScore(score);
       } else {
-        throw new Error('No valid BPM values available');
+        throw new Error('Invalid BPM value in latest data');
       }
     } catch (err) {
       setError(err.message);
@@ -59,7 +62,19 @@ const CheckStress = () => {
       setLoading(false);
     }
   };
-  
+
+  // Format "last updated" time
+  const formatTimeAgo = (timestamp) => {
+    const now = Date.now();
+    const diff = now - timestamp;
+
+    if (diff < 60_000) return 'Just now';
+    if (diff < 60 * 60_000) return `${Math.floor(diff / 60_000)} min ago`;
+
+    const date = new Date(timestamp);
+    return `Today at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  };
+
   // Fetch once on mount
   useEffect(() => {
     fetchHeartRate();
@@ -112,16 +127,26 @@ const CheckStress = () => {
               <p className="text-white text-lg mb-2">
                 Heart Rate: <span className="font-semibold">{parseInt(heartRate)} bpm</span>
               </p>
-              <p className="text-xl mb-4">
+              <p className="text-xl mb-1">
                 Stress Level:{' '}
-                <span className={
-                  stressLevel.includes('High') ? 'text-red-500'
-                  : stressLevel.includes('Moderate') ? 'text-yellow-400'
-                  : 'text-green-400'}>
+                <span
+                  className={
+                    stressLevel.includes('High')
+                      ? 'text-red-500'
+                      : stressLevel.includes('Moderate')
+                      ? 'text-yellow-400'
+                      : 'text-green-400'
+                  }
+                >
                   {stressLevel}
                 </span>
               </p>
-              <p className="italic text-sm text-gray-400">{getQuote()}</p>
+              {lastUpdated && (
+                <p className="text-xs text-gray-400 mt-1">
+                  Last updated: {formatTimeAgo(lastUpdated)}
+                </p>
+              )}
+              <p className="italic text-sm text-gray-400 mt-2">{getQuote()}</p>
             </div>
           )}
 
@@ -154,5 +179,4 @@ const CheckStress = () => {
 };
 
 export default CheckStress;
-
 
