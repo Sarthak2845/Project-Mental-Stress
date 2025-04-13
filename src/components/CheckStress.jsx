@@ -1,7 +1,30 @@
 import { useEffect, useState } from 'react';
 import { RefreshCcw } from 'lucide-react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Tooltip,
+  Legend,
+  TimeScale,
+} from 'chart.js';
+import 'chartjs-adapter-date-fns';
 import 'react-circular-progressbar/dist/styles.css';
+
+// Register Chart.js components
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Tooltip,
+  Legend,
+  TimeScale
+);
 
 const ThreeDotsWave = () => {
   return (
@@ -20,8 +43,8 @@ const CheckStress = () => {
   const [stressLevel, setStressLevel] = useState('');
   const [stressScore, setStressScore] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [heartRateHistory, setHeartRateHistory] = useState([]);
 
-  // Fetch heart rate from API
   const fetchHeartRate = async () => {
     try {
       setLoading(true);
@@ -40,7 +63,9 @@ const CheckStress = () => {
         throw new Error('No heart rate data found');
       }
 
-      // Get the most recent reading (latest timestamp)
+      setHeartRateHistory(heartRates);
+
+      // Get the most recent reading
       const mostRecent = heartRates.reduce((latest, entry) =>
         entry.time > latest.time ? entry : latest
       );
@@ -63,7 +88,6 @@ const CheckStress = () => {
     }
   };
 
-  // Format "last updated" time
   const formatTimeAgo = (timestamp) => {
     const now = Date.now();
     const diff = now - timestamp;
@@ -72,13 +96,15 @@ const CheckStress = () => {
     if (diff < 60 * 60_000) return `${Math.floor(diff / 60_000)} min ago`;
 
     const date = new Date(timestamp);
-    return `Today at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-  };
+    const isToday = new Date().toDateString() === date.toDateString();
 
-  // Fetch once on mount
-  useEffect(() => {
-    fetchHeartRate();
-  }, []);
+    return isToday
+      ? `Today at ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+      : `${date.toLocaleDateString()} at ${date.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        })}`;
+  };
 
   const predictStress = (bpm) => {
     if (bpm < 60) return { level: 'Relaxed 🧘‍♂️', score: 25 };
@@ -97,6 +123,61 @@ const CheckStress = () => {
     if (stressScore > 40) return 'Keep calm and carry on! 🌿';
     return 'You’re doing great, stay relaxed. ✨';
   };
+
+  const getChartData = () => {
+    return {
+      labels: heartRateHistory.map((entry) => new Date(entry.time)),
+      datasets: [
+        {
+          label: 'Heart Rate (bpm)',
+          data: heartRateHistory.map((entry) => entry.bpm),
+          fill: false,
+          borderColor: '#38bdf8',
+          backgroundColor: '#38bdf8',
+          tension: 0.4,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        },
+      ],
+    };
+  };
+
+  const chartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        labels: {
+          color: '#fff',
+        },
+      },
+    },
+    scales: {
+      x: {
+        type: 'time',
+        time: {
+          unit: 'minute',
+        },
+        ticks: {
+          color: '#ccc',
+        },
+      },
+      y: {
+        title: {
+          display: true,
+          text: 'BPM',
+          color: '#ccc',
+        },
+        ticks: {
+          color: '#ccc',
+        },
+        beginAtZero: false,
+      },
+    },
+  };
+
+  useEffect(() => {
+    fetchHeartRate();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-tr from-gray-900 to-gray-800 text-white flex flex-col items-center justify-center text-center px-6 font-[SourGummy]">
@@ -125,7 +206,7 @@ const CheckStress = () => {
                 />
               </div>
               <p className="text-white text-lg mb-2">
-                Heart Rate: <span className="font-semibold">{parseInt(heartRate)} bpm</span>
+                Heart Rate: <span className="font-semibold">{heartRate} bpm</span>
               </p>
               <p className="text-xl mb-1">
                 Stress Level:{' '}
@@ -147,6 +228,14 @@ const CheckStress = () => {
                 </p>
               )}
               <p className="italic text-sm text-gray-400 mt-2">{getQuote()}</p>
+            </div>
+          )}
+
+          {/* 📈 Chart */}
+          {heartRateHistory.length > 0 && (
+            <div className="mt-8 bg-[#1f2937] p-4 rounded-lg w-full max-w-2xl shadow-md border border-gray-700">
+              <h2 className="text-white text-xl mb-4">📊 Heart Rate Trend</h2>
+              <Line data={getChartData()} options={chartOptions} />
             </div>
           )}
 
@@ -179,4 +268,5 @@ const CheckStress = () => {
 };
 
 export default CheckStress;
+
 
