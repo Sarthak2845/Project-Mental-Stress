@@ -14,9 +14,10 @@ const Navbar = ({ isAuth, setIsAuth }) => {
       const response = await fetch("https://mindmetrics-backend.vercel.app/auth/logout", {
         credentials: "include",
       });
-
+  
       if (response.ok) {
-        setIsAuth(false); // Update authentication state
+        setIsAuth(false); // Update auth state
+        window.location.href = "/sign"; // Redirect to sign-in page
       } else {
         console.error("Logout failed");
       }
