@@ -17,6 +17,7 @@ import ReadingTherapy from "./components/ReadingTherapy";
 import YogaTherapy from "./components/YogaTherapy";
 import ConsultDoctor from "./components/ConsultDoctor";
 import HeartInstruction from "./components/HeartInstruction";
+import CheckStress from "./components/CheckStress";
 const App = () => {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);//make it false
@@ -58,6 +59,7 @@ const App = () => {
             <Route path="/yoga" element={<YogaTherapy />} />
             <Route path="/doctor" element={<ConsultDoctor />} />
             <Route path="/heart-instruction" element={<HeartInstruction />} />
+            <Route path="/check-stress" element={<CheckStress />} />
             </Routes>
           </div>
           <Footer />

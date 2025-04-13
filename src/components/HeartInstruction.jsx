@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const HeartInstruction = () => {
     return (
         <div className="max-w-4xl mx-auto px-6 py-12 text-amber-50">
@@ -39,11 +41,11 @@ const HeartInstruction = () => {
     
           {/* CTA */}
           <div className="text-center mt-10">
-            <a href="/check-stress">
-              <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition duration-300 cursor-pointer">
+           <Link to="check-stress">
+           <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition duration-300 cursor-pointer">
                 Start Checking Your Stress 💓
-              </button>
-            </a>
+            </button>
+           </Link>
           </div>
         </div>
       );
