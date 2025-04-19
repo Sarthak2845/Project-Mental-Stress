@@ -180,7 +180,7 @@ const CheckStress = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-gray-900 to-gray-800 text-white flex flex-col items-center justify-center text-center px-6 font-[SourGummy] mt-12">
+    <div className="min-h-screen  text-white flex flex-col items-center justify-center text-center px-6 font-[SourGummy] mt-12">
       <h1 className="text-4xl text-amber-100 font-bold mb-6">🧠 Real-Time Stress Detector</h1>
 
       {error && <p className="text-red-500 mb-4">{error}</p>}
