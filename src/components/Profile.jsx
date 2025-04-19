@@ -28,7 +28,7 @@ const [stressResult, setStressResult] = useState(null);
   },[])
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="text-red-500 text-center mt-24 text-6xl">{error}</div>;
   }
 
   if (!user) {
