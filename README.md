@@ -3,10 +3,8 @@
 ![React](https://img.shields.io/badge/Frontend-React-blue?logo=react)
 ![Node.js](https://img.shields.io/badge/Backend-Node.js-green?logo=node.js)
 ![Google Fit API](https://img.shields.io/badge/API-Google%20Fit-red?logo=google)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Status](https://img.shields.io/badge/Status-Under%20Development-orange)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?logo=github)
-![Made with ❤️ in India](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F-in%20India-orange?style=flat&logo=github)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Sarthak2845/mindmetrics?style=flat&color=blue)
 ![GitHub stars](https://img.shields.io/github/stars/Sarthak2845/mindmetrics?style=flat&color=magenta)
 
