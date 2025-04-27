@@ -68,8 +68,9 @@
 ## 🛠️ Installation & Run Locally
 
 ```bash
-git clone https://github.com/yourusername/mindmetrics.git
-cd mindmetrics
+git clone https://github.com/Sarthak2845/MindMetrics.git
+cd MindMetrics
 npm install
 npm run dev
+
 
